@@ -1,12 +1,15 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class ConsultationListFrame extends JFrame {
+public class ConsultationListFrame extends JFrame{
     private static WestminsterSkinConsultationManager obj = new WestminsterSkinConsultationManager();
 
     JTable cTable;
+//    JButton save,delete;
     public ConsultationListFrame() {
         this.setTitle("Westminster Skin Consultation Clinic - Consultations");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,24 +48,44 @@ public class ConsultationListFrame extends JFrame {
         cTable.setAutoCreateRowSorter(true);
         cTable.setRowHeight(cTable.getRowHeight() + 15);
         JScrollPane pane = new JScrollPane(cTable);
-        pane.setPreferredSize(new Dimension(1070,450));
+        pane.setPreferredSize(new Dimension(1070,550));
         cMiddlePanel.add(pane);
 
         JPanel cBottomPanel = new JPanel();
         cBottomPanel.setBackground(Color.RED);
         cBottomPanel.setPreferredSize(new Dimension(1080,65));
-        JButton save = new JButton("Save Changes");
-        cBottomPanel.add(save);
-        cBottomPanel.add(Box.createHorizontalStrut(50));
-        JButton delete = new JButton("Delete Consultation");
-        cBottomPanel.add(delete);
+//        save = new JButton("Save Changes");
+//        save.addActionListener(this);
+//        cBottomPanel.add(save);
+//        cBottomPanel.add(Box.createHorizontalStrut(50));
+//        delete = new JButton("Delete Consultation");
+//        delete.addActionListener(this);
+//        cBottomPanel.add(delete);
 
 
         this.add(cTopPanel, BorderLayout.NORTH);
         this.add(cMiddlePanel, BorderLayout.CENTER);
         this.add(cBottomPanel, BorderLayout.SOUTH);
-
-
-
     }
+
+
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        if(e.getSource() == save) {
+//            for (int i = 0; i < WestminsterSkinConsultationManager.consultations.size(); i++) {
+//                cTable.getModel().
+//
+//            }
+//            obj.saveConsultationsDataToFile(WestminsterSkinConsultationManager.consultations);
+//        }
+//        if(e.getSource() == delete) {
+//            int selectedRow = cTable.getSelectedRow();
+//            if (selectedRow == -1) {
+//                new ErrorFrame("Select A Consultation");
+//            } else {
+//                WestminsterSkinConsultationManager.consultations.remove(selectedRow);
+//                cTable.addNotify();
+//            }
+//        }
+//    }
 }

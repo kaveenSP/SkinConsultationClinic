@@ -85,13 +85,13 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         bTopPanel.add(yearValue);
         JLabel hour = new JLabel("Hour");
         bTopPanel.add(hour);
-        String[] hours = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
+        String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","00"};
         hourValue = new JComboBox<>(hours);
         hourValue.setPreferredSize(new Dimension(50,20));
         bTopPanel.add(hourValue);
         JLabel minutes = new JLabel("Minutes");
         bTopPanel.add(minutes);
-        String[] aMinutes = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60"};
+        String[] aMinutes = {"00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"};
         minutesValue = new JComboBox<>(aMinutes);
         minutesValue.setPreferredSize(new Dimension(50,20));
         bTopPanel.add(minutesValue);
@@ -201,48 +201,43 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                         new ErrorFrame("Select A Doctor");
                     } else {
                         String doctorName = table.getModel().getValueAt(selectedRow, 0).toString() + " " + table.getModel().getValueAt(selectedRow, 1).toString();
-                        int doctorIndex = -1;
                         boolean foundDoctor = false;
                         if (WestminsterSkinConsultationManager.consultations.size() != 0) {
                             for (int i = 0; i < WestminsterSkinConsultationManager.consultations.size(); i++) {
-                                System.out.println(WestminsterSkinConsultationManager.consultations.get(i).getDoctorName());
-                                System.out.println(doctorName);
                                 if (WestminsterSkinConsultationManager.consultations.get(i).getDoctorName().equalsIgnoreCase(doctorName)) {
-                                    System.out.println("LOL1");
                                     if (WestminsterSkinConsultationManager.consultations.get(i).getConsultationDateAndTime().equals(dateTime)) {
-                                        doctorIndex = -1;
+                                        System.out.println("check1");
                                         foundDoctor = false;
                                     } else {
-                                        doctorIndex = i;
                                         foundDoctor = true;
+                                        System.out.println("check2");
                                     }
                                 } else {
-                                    doctorIndex = i;
-                                    foundDoctor = false;
-                                    System.out.println("LOL3");
+                                    foundDoctor = true;
+                                    System.out.println("check2");
+                                    break;
                                 }
                             }
+
                             if (foundDoctor) {
                                 availableDoctor.setText(doctorName);
+                                System.out.println("check4");
                             } else {
-                                System.out.println("HTTP");
-                                int random = (int)(Math.random() * WestminsterSkinConsultationManager.consultations.size());
-                                if(random != doctorIndex){
-                                    if(WestminsterSkinConsultationManager.consultations.get(random).getDoctorName().equalsIgnoreCase(doctorName)) {
-                                        if(WestminsterSkinConsultationManager.consultations.get(random).getConsultationDateAndTime().equals(dateTime)) {
-                                            foundDoctor = false;
-                                        } else {
-                                            foundDoctor = true;
-                                            doctorName = WestminsterSkinConsultationManager.consultations.get(random).getDoctorName();
-                                        }
+                                System.out.println(WestminsterSkinConsultationManager.consultations.size());
+                                int random = (int)(Math.random() * WestminsterSkinConsultationManager.doctors.size());
+
+                                while (true) {
+                                    if((WestminsterSkinConsultationManager.doctors.get(random).getName() + " " + WestminsterSkinConsultationManager.doctors.get(random).getSurname()).equalsIgnoreCase(doctorName)) {
+                                        random = (int)(Math.random() * WestminsterSkinConsultationManager.doctors.size());
+                                    } else {
+                                        availableDoctor.setText(WestminsterSkinConsultationManager.doctors.get(random).getName() + " " + WestminsterSkinConsultationManager.doctors.get(random).getSurname());
+                                        break;
                                     }
-                                }
-                                if (foundDoctor) {
-                                    availableDoctor.setText(doctorName);
                                 }
                             }
                         } else {
                             availableDoctor.setText(doctorName);
+                            System.out.println("check7");
                         }
                     }
                 } catch (NumberFormatException er) {

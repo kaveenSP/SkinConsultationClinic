@@ -17,11 +17,11 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
         WestminsterSkinConsultationManager manager = new WestminsterSkinConsultationManager();
         manager.loadDoctorsDataFromFile(doctors);
         manager.loadConsultationsDataFromFile(consultations);
-//        boolean checkLoop = true;
+        boolean checkLoop = true;
         String choice;
 
         System.out.println("| WESTMINSTER SKIN CONSULTATION CLINIC |");
-        while(true) {
+        while(checkLoop) {
             System.out.println("-----------------------------------------------------------------------");
             System.out.println("    A : ADD NEW DOCTOR");
             System.out.println("    D : REMOVE DOCTOR");
@@ -51,11 +51,10 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     new DoctorListFrame();
                     break;
                 case "q":
-                    input.close();
+                    checkLoop = false;
                     break;
                 default :
-                    System.out.println("Invalid Option Selected. Would You Like To Try Again ? (Y/N)");
-                    input.close();
+                    System.out.println("Invalid Option Selected");
                     break;
             }
         }
@@ -212,19 +211,23 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
     @Override
     public void deleteDoctor(ArrayList<Doctor> pDoctors) {
-        if(pDoctors.size() != 0) {
+        if(pDoctors.size() == 0) {
             System.out.println("Doctor List Is Empty");
         } else {
             try {
                 System.out.println("Enter The Medical Licence Number Of The Doctor");
                 int medLic = input.nextInt();
+                input.nextLine();
                 boolean removed = false;
+                String doctorName = "";
                 for (int i = 0; i < pDoctors.size(); i++) {
                     if (pDoctors.get(i).getMedicalLicenceNumber() == medLic) {
+                        doctorName = pDoctors.get(i).getName() + " " + pDoctors.get(i).getSurname();
                         pDoctors.remove(i);
                         removed = true;
                     }
                     if (removed) {
+                        System.out.println("Dr. " + doctorName + " Has Been Removed From Westminster Skin Consultation Clinic");
                         break;
                     }
                 }
@@ -236,7 +239,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 input.nextLine();
                 String answer = input.nextLine();
                 if (answer.equalsIgnoreCase("Y")) {
-                    addNewDoctor(pDoctors);
+                    deleteDoctor(pDoctors);
                 } else if (answer.equalsIgnoreCase("N")) {
                     System.out.println("Doctor Has Not Been Removed !");
                 } else {
