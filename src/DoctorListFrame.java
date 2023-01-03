@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class DoctorListFrame extends JFrame implements ActionListener{
     private static WestminsterSkinConsultationManager obj = new WestminsterSkinConsultationManager();
@@ -176,7 +177,7 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         if(e.getSource() == consultations) {
             new ConsultationListFrame();
         }
-        LocalDateTime dateTime;
+        LocalDateTime dateTime = null;
         int _day, _month, _year, _hour, _minutes;
         if(e.getSource() == availabilty) {
             if (dayValue.getSelectedItem().toString().equals("") || monthValue.getSelectedItem().toString().equals("") || yearValue.getText().equals("") || hourValue.getSelectedItem().toString().equals("") || minutesValue.getSelectedItem().toString().equals("")) {
@@ -210,7 +211,7 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                                 }
                             }
                             if (foundDoctor) {
-                                availableDoctor.setText(doctorName);
+                                availableDoctor.setText("Selected Doctor : Dr. " + doctorName);
                             } else {
                                 int random = (int)(Math.random() * WestminsterSkinConsultationManager.consultations.size());
                                 if(random != doctorIndex){
@@ -224,43 +225,11 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                                     }
                                 }
                                 if (foundDoctor) {
-                                    availableDoctor.setText(doctorName);
+                                    availableDoctor.setText("Selected Doctor : Dr. " + doctorName);
                                 }
                             }
                         } else {
-                            availableDoctor.setText(doctorName);
-                        }
-
-                    }
-                    if(e.getSource() == addConsultation) {
-                        String _name = pNameValue.getText();
-                        String _surname = pSurnameValue.getText();
-                        String _dobDay = dobDayValue.getSelectedItem().toString();
-                        String _dobMonth = dobMonthValue.getSelectedItem().toString();
-                        String _dobYear = dobYearValue.getText();
-                        String _mobileNumber = pMobileNumber.getText();
-                        String _patientId = pIdValue.getText();
-                        String _doctor = availableDoctor.getText();
-                        String _cost = consultationCostValue.getText();
-                        String _notes = notesValue.getText();
-                        if(_name.equals("") || _surname.equals("") || _dobDay.equals("") || _dobMonth.equals("") || _dobYear.equals("") || _mobileNumber.equals("") || _patientId.equals("")) {
-                            new ErrorFrame("Fields Cannot Be Empty !");
-                        } else if(_doctor.equals("")) {
-                            new ErrorFrame("Please Select A Doctor !");
-                        } else {
-                            try {
-                                int __day = Integer.parseInt(_dobDay);
-                                int __month = Integer.parseInt(_dobMonth);
-                                int __year = Integer.parseInt(_dobYear);
-                                int __mobileNumber = Integer.parseInt(_mobileNumber);
-                                int __patientId = Integer.parseInt(_patientId);
-                                int __cost = Integer.parseInt(_cost);
-                                LocalDate _dob = LocalDate.of(__day,__month,__year);
-                                Consultation consultation = new Consultation(_name,_surname, _dob, __mobileNumber, __patientId, dateTime, __cost, _notes, _doctor);
-                                obj.saveConsultationsDataToFile(WestminsterSkinConsultationManager.consultations);
-                            } catch (NumberFormatException er) {
-                                new ErrorFrame("Please Enter Valid Details");
-                            }
+                            availableDoctor.setText("Selected Doctor : Dr. " + doctorName);
                         }
                     }
                 } catch (NumberFormatException er) {
@@ -273,7 +242,7 @@ public class DoctorListFrame extends JFrame implements ActionListener{
             String consultationHours = consultationHoursValue.getText();
             String patName = pNameValue.getText();
             String patSurname = pSurnameValue.getText();
-            if (patName.equals("")) {
+            if (patName.equals("") || patSurname.equals("")) {
                 new ErrorFrame("Please Enter Patient Name !");
             } else if (consultationHours.equals("")) {
                 new ErrorFrame("Please Enter Number of Consultation Hours");
@@ -300,7 +269,38 @@ public class DoctorListFrame extends JFrame implements ActionListener{
             }
         }
 
-
+        if(e.getSource() == addConsultation) {
+            String _name = pNameValue.getText();
+            String _surname = pSurnameValue.getText();
+            String _dobDay = Objects.requireNonNull(dobDayValue.getSelectedItem()).toString();
+            String _dobMonth = Objects.requireNonNull(dobMonthValue.getSelectedItem()).toString();
+            String _dobYear = dobYearValue.getText();
+            String _mobileNumber = pMobileNumber.getText();
+            String _patientId = pIdValue.getText();
+            String _doctor = availableDoctor.getText();
+            String _cost = consultationCostValue.getText();
+            String _notes = notesValue.getText();
+            if(_name.equals("") || _surname.equals("") || _dobDay.equals("") || _dobMonth.equals("") || _dobYear.equals("") || _mobileNumber.equals("") || _patientId.equals("")) {
+                new ErrorFrame("Fields Cannot Be Empty !");
+            } else if(_doctor.equals("")) {
+                new ErrorFrame("Please Select A Doctor !");
+            } else {
+                try {
+                    int __day = Integer.parseInt(_dobDay);
+                    int __month = Integer.parseInt(_dobMonth);
+                    int __year = Integer.parseInt(_dobYear);
+                    int __mobileNumber = Integer.parseInt(_mobileNumber);
+                    int __patientId = Integer.parseInt(_patientId);
+                    int __cost = Integer.parseInt(_cost);
+                    LocalDate _dob = LocalDate.of(__year,__month,__day);
+                    Consultation consultation = new Consultation(_name,_surname, _dob, __mobileNumber, __patientId, dateTime, __cost, _notes, _doctor);
+                    WestminsterSkinConsultationManager.consultations.add(consultation);
+                    obj.saveConsultationsDataToFile(WestminsterSkinConsultationManager.consultations);
+                } catch (NumberFormatException er) {
+                    new ErrorFrame("Please Enter Valid Details");
+                }
+            }
+        }
 
     }
 
