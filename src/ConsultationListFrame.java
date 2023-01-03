@@ -12,8 +12,8 @@ public class ConsultationListFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1080,720);
         this.setVisible(true);
-        ImageIcon logo = new ImageIcon("");
-        this.setIconImage(logo.getImage());    //change frame icon
+//        ImageIcon logo = new ImageIcon("");
+//        this.setIconImage(logo.getImage());    //change frame icon
         this.setLayout(new BorderLayout());
 
 //        JPanel cTopPanel = new JPanel();

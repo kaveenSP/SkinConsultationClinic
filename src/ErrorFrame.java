@@ -8,8 +8,8 @@ public class ErrorFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(300,150);
         this.setVisible(true);
-        ImageIcon logo = new ImageIcon("");
-        this.setIconImage(logo.getImage());    //change frame icon
+//        ImageIcon logo = new ImageIcon("");
+//        this.setIconImage(logo.getImage());    //change frame icon
         this.add(error);
     }
 }
