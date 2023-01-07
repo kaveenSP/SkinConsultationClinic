@@ -5,6 +5,8 @@ import java.util.Date;
 public class Consultation extends Patient{
     private LocalDateTime consultationDateAndTime;
     private String doctorName;
+
+    private String fileName;
     private int cost;
     private String notes;
 
@@ -12,12 +14,13 @@ public class Consultation extends Patient{
 
     }
 
-    public Consultation(String name, String surname, LocalDate dateOfBirth, int mobileNumber, int patientId, LocalDateTime consultationDateAndTime, int cost, String notes, String doctorName) {
+    public Consultation(String name, String surname, LocalDate dateOfBirth, int mobileNumber, int patientId, LocalDateTime consultationDateAndTime, int cost, String notes, String doctorName, String filePath) {
         super(name,surname,dateOfBirth,mobileNumber,patientId);
         this.doctorName = doctorName;
         this.consultationDateAndTime = consultationDateAndTime;
         this.cost = cost;
         this.notes = notes;
+        this.fileName = filePath;
     }
 
     public LocalDateTime getConsultationDateAndTime() {
@@ -50,5 +53,13 @@ public class Consultation extends Patient{
 
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String filePath) {
+        this.fileName = filePath;
     }
 }
