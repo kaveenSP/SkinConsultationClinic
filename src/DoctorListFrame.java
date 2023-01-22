@@ -1,5 +1,4 @@
 import javax.crypto.*;
-import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,14 +6,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Base64;
 import java.util.Objects;
 
 public class DoctorListFrame extends JFrame implements ActionListener{
@@ -31,10 +27,14 @@ public class DoctorListFrame extends JFrame implements ActionListener{
     private  JTextArea notesValue;
     private int secretKey = 169;
 
+    //default Constructor
     public DoctorListFrame() {
+        //sets frame title
         this.setTitle("Westminster Skin Consultation Clinic");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1080,720);
+
+        //sets frame layout
         this.setLayout(new BorderLayout());
         this.add(new JLabel("lol"));
 
@@ -55,8 +55,12 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         middlePanel.setPreferredSize(new Dimension(1080,350));
+
+        //add table headers to consultation table
         String[] columnHeaders = {"First Name", "Surname", "DOB", "Mobile Number", "Medical Licence Number", "Specialization"};
         DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, WestminsterSkinConsultationManager.doctors.size() - WestminsterSkinConsultationManager.doctors.size());
+
+        //add data to consultations table
         for (Doctor doctor : WestminsterSkinConsultationManager.doctors) {
             tableModel.addRow(new Object[]{doctor.getName(), doctor.getSurname(), doctor.getDateOfBirth(), doctor.getMobileNumber(), doctor.getMedicalLicenceNumber(), doctor.getSpecialization(),});
         }
@@ -78,13 +82,13 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         bTopPanel.add(day);
         String[] days = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
         dayValue = new JComboBox<>(days);
-        dayValue.setPreferredSize(new Dimension(50,20));
+        dayValue.setPreferredSize(new Dimension(70,20));
         bTopPanel.add(dayValue);
         JLabel month = new JLabel("Month");
         String[] months = {"1","2","3","4","5","6","7","8","9","10","11","12"};
         bTopPanel.add(month);
         monthValue = new JComboBox<>(months);
-        monthValue.setPreferredSize(new Dimension(50,20));
+        monthValue.setPreferredSize(new Dimension(70,20));
         bTopPanel.add(monthValue);
         JLabel year = new JLabel("Year");
         bTopPanel.add(year);
@@ -95,13 +99,13 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         bTopPanel.add(hour);
         String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","00"};
         hourValue = new JComboBox<>(hours);
-        hourValue.setPreferredSize(new Dimension(50,20));
+        hourValue.setPreferredSize(new Dimension(70,20));
         bTopPanel.add(hourValue);
         JLabel minutes = new JLabel("Minutes");
         bTopPanel.add(minutes);
         String[] aMinutes = {"00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"};
         minutesValue = new JComboBox<>(aMinutes);
-        minutesValue.setPreferredSize(new Dimension(50,20));
+        minutesValue.setPreferredSize(new Dimension(70,20));
         bTopPanel.add(minutesValue);
         availabilty = new JButton("Check Availability");
         availabilty.addActionListener(this);
@@ -110,7 +114,6 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         bTopPanel.add(text);
         availableDoctor = new JLabel("");
         bTopPanel.add(availableDoctor);
-
 
         JPanel bMiddlePanel = new JPanel();
         bMiddlePanel.setPreferredSize(new Dimension(1080,150));
@@ -130,12 +133,12 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         JLabel dobDay = new JLabel("DD");
         bMiddlePanel.add(dobDay);
         dobDayValue = new JComboBox<>(days);
-        dobDayValue.setPreferredSize(new Dimension(40,40));
+        dobDayValue.setPreferredSize(new Dimension(70,40));
         bMiddlePanel.add(dobDayValue);
         JLabel dobMonth = new JLabel("MM");
         bMiddlePanel.add(dobMonth);
         dobMonthValue = new JComboBox<>(months);
-        dobMonthValue.setPreferredSize(new Dimension(40,40));
+        dobMonthValue.setPreferredSize(new Dimension(70,40));
         bMiddlePanel.add(dobMonthValue);
         JLabel dobYear = new JLabel("YYYY");
         bMiddlePanel.add(dobYear);
@@ -191,6 +194,9 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         this.setVisible(true);
     }
 
+    /**Encrypt notes regarding patient condition
+     * @param notes first name
+     */
     public String encryptNotes(String notes){
         char[] characters = notes.toCharArray();
         String encryptedText = "";
@@ -201,10 +207,14 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         return encryptedText;
     }
 
-    public String decryptNotes(String notes) {
-        char[] characters = new char[notes.length()];
-        for (int i = 0; i < notes.length(); i++) {
-            characters[i] = notes.charAt(i);
+    /**Decrypt notes regarding patient condition
+     * @param encryptedNotes first name
+     * @return decryptedText decrypted notes
+     */
+    public String decryptNotes(String encryptedNotes) {
+        char[] characters = new char[encryptedNotes.length()];
+        for (int i = 0; i < encryptedNotes.length(); i++) {
+            characters[i] = encryptedNotes.charAt(i);
         }
         String decryptedText = "";
         for(char c : characters) {
@@ -233,6 +243,7 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Please Fill Out Each Field");
             } else {
                 try {
+                    //conversion of String To Int
                     _day = Integer.parseInt(dayValue.getSelectedItem().toString());
                     _month = Integer.parseInt(monthValue.getSelectedItem().toString());
                     _year = Integer.parseInt(yearValue.getText());
@@ -245,30 +256,25 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                     } else {
                         String doctorName = table.getModel().getValueAt(selectedRow, 0).toString() + " " + table.getModel().getValueAt(selectedRow, 1).toString();
                         boolean foundDoctor = false;
+
+                        //checks if the doctor already has an appointment at the selected time
                         if (WestminsterSkinConsultationManager.consultations.size() != 0) {
                             for (int i = 0; i < WestminsterSkinConsultationManager.consultations.size(); i++) {
                                 if (WestminsterSkinConsultationManager.consultations.get(i).getDoctorName().equalsIgnoreCase(doctorName)) {
                                     if (WestminsterSkinConsultationManager.consultations.get(i).getConsultationDateAndTime().equals(dateTime)) {
-                                        System.out.println("check1");
                                         foundDoctor = false;
                                         break;
                                     } else {
                                         foundDoctor = true;
-                                        System.out.println("check2");
-                                        break;
                                     }
                                 } else {
                                     foundDoctor = true;
-                                    System.out.println("check2");
-                                    break;
                                 }
                             }
 
                             if (foundDoctor) {
                                 availableDoctor.setText(doctorName);
-                                System.out.println("check4");
                             } else {
-                                System.out.println(WestminsterSkinConsultationManager.consultations.size());
                                 int random = (int)(Math.random() * WestminsterSkinConsultationManager.doctors.size());
 
                                 while (true) {
@@ -282,64 +288,20 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                                     }
                                 }
                             }
-
-
-//                            int i;
-//                            boolean foundDoctor = true;
-//                            if (WestminsterSkinConsultationManager.consultationList.size() != 0) {
-//                                for ( i = 0; i < WestminsterSkinConsultationManager.consultationList.size(); i++) {
-//                                    if (WestminsterSkinConsultationManager.consultationList.get(i).getDocML().equalsIgnoreCase(docML)) {
-//                                        if (WestminsterSkinConsultationManager.consultationList.get(i).getDateTime().equals(dateTime)) {
-//                                            foundDoctor = true;
-//                                        } else {
-//                                            foundDoctor = false;
-//                                        }
-//                                    }else{
-//                                        foundDoctor = false;
-//                                    }
-//                                }
-//                                if (!foundDoctor) {
-//                                    consultDoc.setText("Congratulations! Your consultation appointment is successful");
-//
-//                                } else {
-//                                    //consultDoc.setText("bla bla" );
-//                                    while (foundDoctor) {
-//                                        int random = (int)(Math.random() * WestminsterSkinConsultationManager.doctorList.size());
-//                                        //if(random != docIndex){
-//                                        for ( i = 0; i < WestminsterSkinConsultationManager.consultationList.size(); i++) {
-//                                            if(WestminsterSkinConsultationManager.doctorList.get(random).getMedicalLicenceNumber().equals(WestminsterSkinConsultationManager.consultationList.get(i).getDocML())){
-//                                                if(WestminsterSkinConsultationManager.consultationList.get(i).getDateTime().equals(dateTime)){
-//                                                    foundDoctor = true;
-//                                                } else {
-//                                                    foundDoctor = false;
-//                                                }
-//                                            } else{
-//                                                foundDoctor = false;
-//                                            }
-//                                        }
-//                                        //}
-//                                        if (!foundDoctor) {
-//                                            consultDoc.setText("bla bla" + WestminsterSkinConsultationManager.doctorList.get(random).getMedicalLicenceNumber() );
-//                                        }
-//                                    }
-//
-//                                }
-//                            } else {
-//                                consultDoc.setText("empty");
-//                            }
-
-
                         } else {
                             availableDoctor.setText(doctorName);
-                            System.out.println("check7");
                         }
                     }
+                    //Validates User Input
                 } catch (NumberFormatException er) {
                     JOptionPane.showMessageDialog(null, "Please Enter Valid Details");
+                } catch (IndexOutOfBoundsException er) {
+                    System.out.println("");
                 }
             }
         }
 
+        //calculates consultation cost
         if(e.getSource() == calculateCost) {
             String consultationHours = consultationHoursValue.getText();
             String patName = pNameValue.getText();
@@ -366,6 +328,7 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                         }
                     }
                     consultationCostValue.setText(Integer.toString(costPerHour*_consultationHours));
+                    //Validates user input
                 } catch (NumberFormatException er) {
                     JOptionPane.showMessageDialog(null, "Please Enter Valid Details");
                 }
@@ -389,22 +352,21 @@ public class DoctorListFrame extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Please Select A Doctor");
             } else {
                 try {
+                    //conversion of String to Int
                     int __day = Integer.parseInt(_dobDay);
                     int __month = Integer.parseInt(_dobMonth);
                     int __year = Integer.parseInt(_dobYear);
                     int __mobileNumber = Integer.parseInt(_mobileNumber);
                     int __patientId = Integer.parseInt(_patientId);
                     int __cost = Integer.parseInt(_cost);
-                    System.out.println(__year);
-                    System.out.println(__month);
-                    System.out.println(__year);
                     LocalDate _dob = LocalDate.of(__year,__month,__day);
-                    System.out.println(_dob);
+
                     _notes = encryptNotes(_notes);
                     Consultation consultation = new Consultation(_name,_surname, _dob, __mobileNumber, __patientId, dateTime, __cost, _notes, _doctor, fileName);
                     fileName = "";
                     WestminsterSkinConsultationManager.consultations.add(consultation);
                     obj.saveConsultationsDataToFile();
+                    JOptionPane.showMessageDialog(null, "Consultation Added Successfully");
                 } catch (NumberFormatException er) {
                     JOptionPane.showMessageDialog(null, "Please Fill Each Field With Valid Details");
                 } catch (Exception er) {
@@ -423,10 +385,16 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         }
     }
 
+    /**Encrypt images regarding patient condition
+     * @param fileName file name
+     * @param filePath file path
+     */
     public void encryptImage(String filePath, String fileName) {
         try {
             FileInputStream file = new FileInputStream(filePath);
             FileOutputStream outputStream = new FileOutputStream(fileName);
+
+            //secret key
             byte key[] = "secret12".getBytes();
             SecretKeySpec spec = new SecretKeySpec(key, "DES");
             Cipher cipher = Cipher.getInstance("DES");
@@ -434,6 +402,8 @@ public class DoctorListFrame extends JFrame implements ActionListener{
             CipherOutputStream cos = new CipherOutputStream(outputStream, cipher);
             byte[] buffer = new byte[1024];
             int read;
+
+            //write data
             while ((read = file.read(buffer)) != -1) {
                 cos.write(buffer, 0, read);
             }
@@ -449,10 +419,15 @@ public class DoctorListFrame extends JFrame implements ActionListener{
         }
     }
 
+    /**Decrypt images regarding patient condition
+     * @param fileName file name
+     */
     public void decryptImage(String fileName) {
         try {
             FileInputStream file = new FileInputStream(fileName);
             FileOutputStream outputStream = new FileOutputStream("decrypted" + fileName);
+
+            //Secret Key
             byte key[] = "secret12".getBytes();
             SecretKeySpec spec = new SecretKeySpec(key, "DES");
             Cipher cipher = Cipher.getInstance("DES");
@@ -460,6 +435,8 @@ public class DoctorListFrame extends JFrame implements ActionListener{
             CipherOutputStream cos = new CipherOutputStream(outputStream, cipher);
             byte[] buffer = new byte[1024];
             int read;
+
+            //read data
             while ((read = file.read(buffer)) != -1) {
                 cos.write(buffer, 0, read);
             }

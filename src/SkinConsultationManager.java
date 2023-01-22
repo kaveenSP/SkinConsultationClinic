@@ -1,6 +1,6 @@
 public interface SkinConsultationManager {
-    Doctor addNewDoctor();
-    void deleteDoctor(int medicalLicenceNumber);
+    void addNewDoctor();
+    void deleteDoctor();
     void printDoctorList();
     void saveDoctorsDataToFile();
     void loadDoctorsDataFromFile();

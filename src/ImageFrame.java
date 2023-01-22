@@ -1,20 +1,19 @@
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class ImageFrame extends JFrame{
 
+    //instance of DoctorListFrame
     DoctorListFrame dObj = new DoctorListFrame();
+
+    //default Constructor
     public ImageFrame(String filepath) {
+        //set frame title
         this.setTitle("Westminster Skin Consultation Clinic - Consultations");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(600,400);
+        //decrypt image
         dObj.decryptImage(filepath);
         ImageIcon image = new ImageIcon("decrypted" + filepath);
         Image newImage = image.getImage().getScaledInstance(600, 400,  java.awt.Image.SCALE_SMOOTH);
