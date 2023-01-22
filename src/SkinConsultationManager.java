@@ -1,11 +1,11 @@
-import java.util.ArrayList;
-
 public interface SkinConsultationManager {
-    void addNewDoctor(ArrayList<Doctor> pDoctors);
-    void deleteDoctor(ArrayList<Doctor> pDoctors);
-    void printDoctorList(ArrayList<Doctor> pDoctors);
-    void saveDoctorsDataToFile(ArrayList<Doctor> pDoctors);
-    void loadDoctorsDataFromFile(ArrayList<Doctor> pDoctors);
-    void saveConsultationsDataToFile(ArrayList<Consultation> pConsultations);
-    void loadConsultationsDataFromFile(ArrayList<Consultation> pConsultations);
+    void addNewDoctor();
+    void deleteDoctor();
+    void printDoctorList();
+    void saveDoctorsDataToFile();
+    void loadDoctorsDataFromFile();
+    void saveConsultationsDataToFile();
+    void loadConsultationsDataFromFile();
+    void viewConsultations();
+    void cancelConsultation();
 }
